@@ -1,5 +1,4 @@
 import api from "../Config/axiosApi";
-import Swal from "sweetalert2";
 
 const login = (user) => {
   return api
