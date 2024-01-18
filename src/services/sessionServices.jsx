@@ -5,7 +5,6 @@ const createSession = (data) => {
   return api
     .post("/create-session", data)
     .then((response) => {
-      console.log(response);
       return response;
     })
     .catch((error) => {
@@ -16,9 +15,8 @@ const createSession = (data) => {
 
 const getSessions = (sessionId) => {
   return api
-    .get(`/get-sessions/${sessionId}`)
+    .get(`/get-informations/${sessionId}`)
     .then((response) => {
-      console.log(response);
       return response;
     })
     .catch((error) => {
@@ -31,7 +29,6 @@ const getAllSessions = () => {
   return api
     .get(`/get-sessions`)
     .then((response) => {
-      console.log(response);
       return response;
     })
     .catch((error) => {
@@ -40,4 +37,34 @@ const getAllSessions = () => {
     });
 };
 
-export default { createSession, getSessions, getAllSessions };
+const deleteSession = (sessionId) => {
+  return api
+    .delete(`/delete-session/${sessionId}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
+const getMusicBySession = (sessionId) => {
+  return api
+    .get(`/get-musics/${sessionId}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
+export default {
+  createSession,
+  getSessions,
+  getAllSessions,
+  deleteSession,
+  getMusicBySession,
+};
