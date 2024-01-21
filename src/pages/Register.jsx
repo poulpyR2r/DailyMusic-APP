@@ -36,7 +36,6 @@ function Register() {
 
     try {
       const response = await authServices.register(user);
-      console.log("++++++", response);
       if (response && response.status === 409) {
         Swal.fire({
           icon: "error",
@@ -45,7 +44,7 @@ function Register() {
         });
       }
       if (response && response.status === 201) {
-        navigate("/login");
+        navigate("/");
       } else {
         Swal.fire({
           icon: "error",

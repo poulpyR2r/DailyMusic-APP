@@ -1,7 +1,6 @@
 import api from "../Config/axiosApi";
 
 const createSession = (data) => {
-  console.log("data", data);
   return api
     .post("/create-session", data)
     .then((response) => {

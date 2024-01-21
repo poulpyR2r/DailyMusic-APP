@@ -20,8 +20,9 @@ function Login() {
       password,
     };
     try {
-      const response = await authServices.login(user); // Use await here
+      const response = await authServices.login(user);
       if (response && response.status === 200) {
+        
         navigate("/home");
       }
     } catch (error) {

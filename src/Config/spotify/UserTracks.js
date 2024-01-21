@@ -21,7 +21,7 @@ const UserTracks = ({ tokenSpotify }) => {
   }, [tokenSpotify]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 justify-center">
       {topTracks.map((track, index) => (
         <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden p-4 mb-4">
           {track.album.images.length > 0 && (

@@ -17,7 +17,6 @@ const login = (user) => {
 const register = (user) => {
   return api.post("/register", user)
     .then((response) => {
-      console.log(response);
       return response;
     })
     .catch((error) => {

@@ -13,7 +13,9 @@ import VoteMusicToSession from "./pages/VoteMusicToSession";
 import "./App.css";
 import CreateSessionPage from "./pages/CreateSessionPage";
 import Callback from "./Config/spotify/Callback";
-import ShowSession from "./component/ShowSession";
+import Pages404 from "./pages/Pages404";
+import ShowSessionPage from "./pages/ShowSessionPage";
+import ContactPages from "./pages/ContactPages";
 
 function App() {
   return (
@@ -21,15 +23,18 @@ function App() {
       <div className="App">
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/create-session" element={<CreateSessionPage />}></Route>
+          <Route path="/create-sessions" element={<CreateSessionPage />}></Route>
           <Route path="/add-music/:sessionId" element={<AddMusicToSession />} />
-          <Route path="/home" element={<ShowSession />} />
+          <Route path="/show-sessions" element={<ShowSessionPage />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/contact" element={<ContactPages />} />
           <Route
             path="/vote-music/:sessionId"
             element={<VoteMusicToSession />}
           />
+          <Route path="*" element={<Pages404>Not Found</Pages404>} />
 
           <Route path="/callback" element={<Callback />} />
         </Routes>

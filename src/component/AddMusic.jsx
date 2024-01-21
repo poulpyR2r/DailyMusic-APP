@@ -6,9 +6,6 @@ import api from "../Config/axiosApi";
 const AddMusic = ({ sessionId, tokenSpotify }) => {
   const [session, setSession] = useState(null); // State should hold an object, not an array
 
-  
-
-
   const getSession = async () => {
     const response = await sessionServices.getSessions(sessionId);
     if (
@@ -28,17 +25,14 @@ const AddMusic = ({ sessionId, tokenSpotify }) => {
     <div>
       {session && (
         <>
-          <h2>{session.module_name}</h2>
-          <p>
-            Expiration Date:{" "}
-            {new Date(session.expiration_date).toLocaleDateString()}
-          </p>
+          <h2 className="transparenteEffect">{session.module_name}</h2>
+
           {Array.isArray(session.musics) && session.musics.length > 0 ? (
             session.musics.map((music, index) => (
               <div key={index}>{music.name}</div>
             ))
           ) : (
-            <p>No music added yet</p>
+            <p></p>
           )}
         </>
       )}

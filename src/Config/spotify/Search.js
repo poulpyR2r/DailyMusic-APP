@@ -4,6 +4,7 @@ import UserTracks from "./UserTracks";
 import { useParams } from "react-router-dom";
 import { decodeToken } from "../../services/tokenService";
 import api from "../axiosApi";
+import Swal from "sweetalert2";
 
 const Search = ({ tokenSpotify }) => {
   const [searchKey, setSearchKey] = useState("");
@@ -26,13 +27,10 @@ const Search = ({ tokenSpotify }) => {
             artist: track.artists.map((artist) => artist.name).join(", "),
             music_id: track.id,
           };
-          console.log("musicData", musicData);
           const response = await api.post("/music", musicData);
-          console.log("Musique enregistrée avec succès:", response.data.data.id);
           return response.data.data.id; 
         })
       );
-      console.log("musicIds", musicIds);
       await updateVotingSession(musicIds);
     } catch (error) {
       console.error("Erreur lors de l’enregistrement des pistes:", error);
@@ -42,7 +40,6 @@ const Search = ({ tokenSpotify }) => {
   const updateVotingSession = async (musicIds) => {
     try {
       await api.put(`/update-session/${sessionId}`, { musics: musicIds });
-      console.log("Session de vote mise à jour avec succès.");
     } catch (error) {
       console.error(
         "Erreur lors de la mise à jour de la session de vote:",
@@ -53,6 +50,15 @@ const Search = ({ tokenSpotify }) => {
   
   const handleSaveTracks = () => {
     saveSelectedTracks();
+    if (tracksSelected.length > 0) {
+      Swal.fire({
+        title: "Pistes enregistrées !",
+        icon: "success",
+        confirmButtonText: "Cool",
+      })
+    }
+
+    setTracksSelected([]);
   };
 
   const onSelectTrack = (track) => {
@@ -134,7 +140,7 @@ const Search = ({ tokenSpotify }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
         {tracks.map((track, index) => (
           <div
             key={index}

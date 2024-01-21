@@ -13,7 +13,6 @@ const voteForMusic = ({ userId, musicId }) => {
 };
 
 const getVotesByMusic = (musicId) => {
-    console.log("musicId", musicId);
   return api
     .get(`/get-votes/${musicId}`)
     .then((response) => {

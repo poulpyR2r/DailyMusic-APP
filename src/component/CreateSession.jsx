@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-import { decodeToken } from "../services/tokenService";
 import sessionServices from "../services/sessionServices";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import AuthSpotify from "../Config/spotify/AuthSpotify";
 
-const CreateSession = () => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+const CreateSession = ({ token, userRole }) => {
   const [_sessionId, setSessionId] = useState("");
-  const [userRole, setUserRole] = useState(null);
   const [sessions, setSessions] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      const decodedToken = decodeToken(token);
-      if (decodedToken) {
-        setUserRole(decodedToken.role);
-      }
-    }
-  }, [token]);
 
   const handleAddSession = () => {
     if (sessionStorage.getItem("authTokenSpotify") === null) {
@@ -82,7 +70,6 @@ const CreateSession = () => {
         sessionServices
           .createSession(result.value)
           .then((response) => {
-            console.log("response", response);
             Swal.fire({
               icon: "success",
               title: "Session ajoutée avec succès",
@@ -92,14 +79,12 @@ const CreateSession = () => {
             handleGetSessions();
           })
           .catch((error) => {
-            console.log("error", error);
             Swal.fire({
               icon: "error",
               title: "Oops...",
               text: "Something went wrong!",
             });
           });
-        console.log("Données du formulaire:", result.value);
       }
     });
   };
@@ -187,14 +172,14 @@ const CreateSession = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center  min-h-screen bg-gray-100 p-4">
       {userRole && (
-        <div className="bg-slate-600 p-8 rounded-2xl text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
+        <div className="bg-primary-500 p-8 rounded text-center shadow-xl mb-8">
+          <h2 className="text-4xl font-extrabold text-white mb-4">
             Ajouter une session
           </h2>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-secondary-700 rounded text-white font-bold py-3 px-6  transition duration-300"
             onClick={handleAddSession}
           >
             Ajouter
@@ -202,51 +187,56 @@ const CreateSession = () => {
         </div>
       )}
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="container px-4 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sessions.map((session) => (
           <div
             key={session._id}
-            className={`max-w-sm p-6 border border-gray-200 rounded-lg shadow ${
-              isExpired(session.expiration_date) ? "bg-gray-200" : "bg-white"
-            }`}
+            className={`max-w-sm rounded-2xl overflow-hidden shadow-lg ${
+              isExpired(session.expiration_date) ? "bg-gray-300" : "bg-white"
+            } transform transition duration-300 hover:scale-105`}
           >
-            <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
-              {session.module_name}
-            </h5>
-            <p className="mb-3 font-normal text-gray-500">
-              {new Date(session.expiration_date).toLocaleDateString()}
-            </p>
-            <p className="mb-3 font-normal text-gray-500">
-                Catégorie : {session.categorie}
-            </p>
-            {userRole && (
+            <div className="px-6 py-4">
+              <h5 className="transparenteEffect font-bold text-xl mb-2 text-gray-800">
+                {session.module_name}
+              </h5>
+              <p className="text-gray-700 text-base">
+                Expiration:{" "}
+                {new Date(session.expiration_date).toLocaleDateString()}
+              </p>
+              <p className="text-gray-700 text-base">
+                Catégorie: {session.categorie}
+              </p>
+            </div>
+            <div className="px-6 pt-4 pb-2">
+              {userRole && (
+                <button
+                  onClick={() => handleDeleteSession(session._id)}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded mb-3 transition duration-300"
+                >
+                  Supprimer la session
+                </button>
+              )}
               <button
-                onClick={() => handleDeleteSession(session._id)}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded mb-2"
+                onClick={() => handleAddMusic(session._id)}
+                className={`w-full text-white font-medium py-2 px-4 rounded mb-3 transition duration-300 ${
+                  isExpired(session.expiration_date)
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700"
+                }`}
               >
-                Supprimer la session
+                Ajouter des musiques
               </button>
-            )}
-            <button
-              onClick={() => handleAddMusic(session._id)}
-              className={`w-full text-white font-medium py-2 px-4 rounded mb-2 ${
-                isExpired(session.expiration_date)
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-indigo-600 hover:bg-indigo-700"
-              }`}
-            >
-              Ajouter des musiques
-            </button>
-            <button
-              className={`w-full text-white font-medium py-2 px-4 rounded ${
-                isExpired(session.expiration_date)
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-indigo-600 hover:bg-indigo-700"
-              }`}
-              onClick={() => handleVoteMusic(session._id)}
-            >
-              Consulter la liste des musiques de la session
-            </button>
+              <button
+                className={`w-full text-white font-medium py-2 px-4 rounded transition duration-300 ${
+                  isExpired(session.expiration_date)
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-700"
+                }`}
+                onClick={() => handleVoteMusic(session._id)}
+              >
+                Consulter la liste des musiques de la session
+              </button>
+            </div>
           </div>
         ))}
       </div>

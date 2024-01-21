@@ -12,7 +12,7 @@ const Callback = () => {
       // Stockez le token pour une utilisation future
       sessionStorage.setItem("authTokenSpotify", token);
       // Redirigez vers une autre page après la connexion
-      navigate("/create-session");
+      navigate("/create-sessions");
     }
   }, [navigate]);
 

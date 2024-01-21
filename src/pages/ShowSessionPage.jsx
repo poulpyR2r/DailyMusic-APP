@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../component/NavBar";
-import DailyMusic from "../component/DailyMusic";
+import ShowSession from "../component/ShowSession";
 import { decodeToken } from "../services/tokenService";
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const ShowSessionPage = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -16,11 +18,11 @@ const Home = () => {
     }
   }, [token]);
   return (
-    <>
+    <div className="">
       <NavBar token={token} userRole={userRole}></NavBar>
-      <DailyMusic token={token}></DailyMusic>
-    </>
+      <ShowSession></ShowSession>
+    </div>
   );
 };
 
-export default Home;
+export default ShowSessionPage;
