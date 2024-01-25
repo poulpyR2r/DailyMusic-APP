@@ -60,10 +60,23 @@ const getMusicBySession = (sessionId) => {
     });
 };
 
+const deleteMusicFromSession = (sessionId, musicId) => {
+  return api
+    .delete(`/delete-music/${sessionId}/${musicId}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
 export default {
   createSession,
   getSessions,
   getAllSessions,
   deleteSession,
   getMusicBySession,
+  deleteMusicFromSession,
 };

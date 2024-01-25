@@ -1,8 +1,8 @@
 import api from "../Config/axiosApi";
 
-const voteForMusic = ({ userId, musicId }) => {
+const voteForMusic = ({ userId, musicId, sessionId }) => {
   return api
-    .post("/vote", { userId, musicId })
+    .post("/vote", { userId, musicId, sessionId })
     .then((response) => {
       return response;
     })

@@ -133,10 +133,14 @@ const CreateSession = ({ token, userRole }) => {
   };
 
   const isExpired = (expirationDate) => {
-    // const simulatedCurrentDate = new Date("2024-07-01");
-    const now = new Date();
+    // const currentDate = new Date();
+    const currentDate = new Date("2024-01-26T00:00:00"); // Pour la simulation
+
     const expiration = new Date(expirationDate);
-    return expiration < now;
+    const twoDaysAfterExpiration = new Date(expiration);
+    twoDaysAfterExpiration.setDate(expiration.getDate() + 2);
+
+    return currentDate >= twoDaysAfterExpiration;
   };
 
   useEffect(() => {
@@ -172,14 +176,12 @@ const CreateSession = ({ token, userRole }) => {
   };
 
   return (
-    <div className="flex flex-col items-center  min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-800 to-primary-900 text-white p-4">
       {userRole && (
-        <div className="bg-primary-500 p-8 rounded text-center shadow-xl mb-8">
-          <h2 className="text-4xl font-extrabold text-white mb-4">
-            Ajouter une session
-          </h2>
+        <div className="text-center mb-8 animate-fadeIn">
+          <h2 className="text-4xl font-bold mb-4">Ajouter une session</h2>
           <button
-            className="bg-secondary-700 rounded text-white font-bold py-3 px-6  transition duration-300"
+            className="bg-primary-600 hover:bg-primary-700 rounded py-2 px-4 font-bold transition duration-300"
             onClick={handleAddSession}
           >
             Ajouter
@@ -187,54 +189,40 @@ const CreateSession = ({ token, userRole }) => {
         </div>
       )}
 
-      <div className="container px-4 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sessions.map((session) => (
           <div
             key={session._id}
-            className={`max-w-sm rounded-2xl overflow-hidden shadow-lg ${
-              isExpired(session.expiration_date) ? "bg-gray-300" : "bg-white"
-            } transform transition duration-300 hover:scale-105`}
+            className={`animate-fadeIn rounded-2xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 bg-white/10 backdrop-blur-md p-4 ${
+              isExpired(session.expiration_date) ? "opacity-50" : ""
+            }`}
           >
-            <div className="px-6 py-4">
-              <h5 className="transparenteEffect font-bold text-xl mb-2 text-gray-800">
-                {session.module_name}
-              </h5>
-              <p className="text-gray-700 text-base">
+            <div>
+              <h5 className="font-bold text-xl mb-2">{session.module_name}</h5>
+              <p>
                 Expiration:{" "}
                 {new Date(session.expiration_date).toLocaleDateString()}
               </p>
-              <p className="text-gray-700 text-base">
-                Catégorie: {session.categorie}
-              </p>
+              <p>Catégorie: {session.categorie}</p>
             </div>
-            <div className="px-6 pt-4 pb-2">
+            <div className="mt-4">
               {userRole && (
                 <button
                   onClick={() => handleDeleteSession(session._id)}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded mb-3 transition duration-300"
+                  className="w-full bg-red-600 hover:bg-red-700 rounded py-2 mb-2 transition duration-300"
                 >
                   Supprimer la session
                 </button>
               )}
               <button
                 onClick={() => handleAddMusic(session._id)}
-                className={`w-full text-white font-medium py-2 px-4 rounded mb-3 transition duration-300 ${
+                className={`w-full rounded py-2 mb-2 transition duration-300 ${
                   isExpired(session.expiration_date)
-                    ? "bg-gray-400 cursor-not-allowed"
+                    ? "bg-gray-500 cursor-not-allowed"
                     : "bg-indigo-600 hover:bg-indigo-700"
                 }`}
               >
                 Ajouter des musiques
-              </button>
-              <button
-                className={`w-full text-white font-medium py-2 px-4 rounded transition duration-300 ${
-                  isExpired(session.expiration_date)
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-green-600 hover:bg-green-700"
-                }`}
-                onClick={() => handleVoteMusic(session._id)}
-              >
-                Consulter la liste des musiques de la session
               </button>
             </div>
           </div>

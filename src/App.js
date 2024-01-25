@@ -20,7 +20,7 @@ import ContactPages from "./pages/ContactPages";
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className=" h-screen bg-gradient-to-br from-primary-800 to-primary-900">
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/login" element={<Login />} />

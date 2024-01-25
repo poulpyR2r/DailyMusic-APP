@@ -13,7 +13,6 @@ const ShowSession = () => {
   const [sessions, setSessions] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userVotes, setUserVotes] = useState({});
-  console.log("userVotes", userVotes);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
 
@@ -31,43 +30,33 @@ const ShowSession = () => {
     fetchSessions();
   }, []);
 
-  const isSessionExpired = (expirationDate) => {
-    const currentDate = new Date();
-    const expiration = new Date(expirationDate);
-    const dayAfterExpiration = new Date(expirationDate);
-    dayAfterExpiration.setDate(expiration.getDate() + 2);
-    return currentDate >= dayAfterExpiration;
-  };
-
   const isResultDay = (expirationDate) => {
-    // Utilisez une date fixe pour simuler le "currentDate"
-    const simulatedCurrentDate = new Date("2024-12-12");
+    const currentDate = new Date("2024-01-26T00:00:00");
 
-    // Assurez-vous que la date d'expiration est convertie en objet Date
+    // const currentDate = new Date(); // Date actuelle
     const expiration = new Date(expirationDate);
+    const dayAfterExpiration = new Date(expiration);
+    dayAfterExpiration.setDate(expiration.getDate() + 1);
 
-    // Calculez le "nextDay" comme étant le jour après la date d'expiration
-    const nextDay = new Date(expiration);
-    nextDay.setDate(expiration.getDate() + 1);
-
-    // Affichez les dates pour le débogage
-    console.log("Simulated Current Date:", simulatedCurrentDate);
-    console.log("Expiration Date:", expiration);
-    console.log("Next Day:", nextDay);
-
-    // Vérifiez si la date simulée est entre la date d'expiration et le jour suivant
-    if (simulatedCurrentDate > expiration && simulatedCurrentDate < nextDay) {
-      console.log("Result day++++++++++++++++++++++++++++++");
-      return true;
-    }
+    return (
+      currentDate.getDate() === dayAfterExpiration.getDate() &&
+      currentDate.getMonth() === dayAfterExpiration.getMonth() &&
+      currentDate.getFullYear() === dayAfterExpiration.getFullYear()
+    );
   };
 
-  console.log(
-    "sessions",
-    isResultDay(
-      "Mon Jan 22 2024 01:00:00 GMT+0100 (heure normale d’Europe centrale)"
-    )
-  );
+  const isExpired = (expirationDate) => {
+    const currentDate = new Date("2024-01-26T00:00:00");
+
+    // const currentDate = new Date(); // Date actuelle
+    const expiration = new Date(expirationDate);
+    const twoDaysAfterExpiration = new Date(expiration + 2);
+    console.log("twoDaysAfterExpiration", twoDaysAfterExpiration);
+    twoDaysAfterExpiration.setDate(expiration.getDate());
+
+    // Vérifie si la date actuelle est après le jour des résultats
+    return currentDate > twoDaysAfterExpiration;
+  };
 
   const fetchSessions = async () => {
     try {
@@ -95,24 +84,13 @@ const ShowSession = () => {
   };
 
   const handleVote = async (musicId, sessionId) => {
-    let votes = JSON.parse(localStorage.getItem("userVotes")) || {};
-
-    if (votes[sessionId]) {
-      Swal.fire({
-        title: "Vous avez déjà voté",
-        text: "Vous ne pouvez pas voter deux fois dans la même session",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-      return;
-    }
-
     try {
-      const response = await voteService.voteForMusic({ userId, musicId });
+      const response = await voteService.voteForMusic({
+        userId,
+        musicId,
+        sessionId,
+      });
       if (response.status === 201) {
-        let updatedVotes = { ...votes, [sessionId]: musicId };
-        setUserVotes(updatedVotes);
-        localStorage.setItem("userVotes", JSON.stringify(updatedVotes));
         fetchSessions();
       }
     } catch (error) {
@@ -120,67 +98,86 @@ const ShowSession = () => {
     }
   };
 
+  if (!sessions.length)
+    return (
+      <div className="flex items-center justify-center flex-col">
+        <h2 className="text-4xl font-bold mb-4 mt-28 text-white">
+          Reviens plus tard il n'y a pas de session pour le moment !{" "}
+        </h2>
+        <span class="loader mt-5"></span>
+      </div>
+    );
+
   return (
     <div className="flex items-center justify-center">
-      <div className=" mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {sessions.map((session) =>
-          isResultDay(session.expiration_date) ? (
-            <CalculeRates sessionId={session._id} />
-          ) : (
-            <div
-              key="{session._id}"
-              className="max-w-sm p-6 border font-heading rounded-lg shadow-xl  bg-primary-100 hover:shadow-lg transition-shadow duration-300 text-left "
-            >
-              <div className="flex flex-col items-left ">
-                <h5 className=" transparenteEffect mb-2 text-2xl font-semibold text-black font-sans">
-                  {session.module_name}
-                </h5>
-                <p className="mb-3 text-gray-700">
-                  <span className="font-medium">Expiration:</span>{" "}
-                  {new Date(session.expiration_date).toLocaleDateString()}
-                </p>
-                <p className="mb-3 text-gray-700">
-                  <span className="font-medium">Catégorie:</span>{" "}
-                  {session.categorie}
-                </p>
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {sessions.map((session) => {
+          // Afficher les résultats uniquement le jour après l'expiration
+          if (isResultDay(session.expiration_date)) {
+            return (
+              <div className="max-w-sm p-6  font-heading rounded-lg shadow-xl bg-white/10 backdrop-blur-md hover:shadow-lg transition-shadow duration-300 text-left animate-fadeIn">
+                <CalculeRates
+                  key={session._id}
+                  name={session.module_name}
+                  sessionId={session._id}
+                  categorie={session.categorie}
+                />
               </div>
+            );
+          }
 
-              <div className="flex flex-col gap-3 h-72 overflow-auto">
-                {session.musics.map((music, idx) => (
-                  <div
-                    key={idx}
-                    className="text-gray-700 rounded-lg bg-secondary-200 flex justify-between items-center p-2 hover:bg-secondary-300 transition-colors duration-300"
-                  >
-                    <div className="flex-1">
-                      {music.title} - {music.artist}
-                    </div>
-                    <div className="flex items-center">
-                      <button
-                        onClick={() => handleVote(music._id, session._id)}
-                        className="m-2 p-1 rounded  transition-colors duration-300"
-                      >
-                        <svg
-                          width="24px"
-                          height="24px"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
+          // Afficher la session si elle n'est pas encore expirée
+          if (!isExpired(session.expiration_date)) {
+            return (
+              <div
+                key={session._id}
+                className="max-w-sm p-6  font-heading rounded-lg shadow-xl bg-white/10 backdrop-blur-md hover:shadow-lg transition-shadow duration-300 text-left animate-fadeIn"
+              >
+                <div className="flex flex-col items-left ">
+                  <h5 className="mb-2 text-2xl font-semibold text-primary-50">
+                    {session.module_name}
+                  </h5>
+                  <p className="mb-3 text-primary-300">
+                    <span className="font-medium">Expiration:</span>{" "}
+                    {new Date(session.expiration_date).toLocaleDateString()}
+                  </p>
+                  <p className="mb-3 text-primary-300">
+                    <span className="font-medium">Catégorie:</span>{" "}
+                    {session.categorie}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 h-72 overflow-auto">
+                  {session.musics.map((music, idx) => (
+                    <div
+                      key={idx}
+                      className="text-primary-50 rounded-lg bg-primary-800 flex justify-between items-center p-2 hover:bg-primary-800/50 transition-colors duration-300"
+                    >
+                      <div className="flex-1">
+                        {music.title} - {music.artist}
+                      </div>
+                      <div className="flex items-center">
+                        <button
+                          onClick={() => handleVote(music._id, session._id)}
+                          className="m-2 p-1 rounded transition-colors duration-300"
                         >
-                          <path
-                            d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"
-                            fill="none"
-                            stroke={music.vote_count ? "green" : "#003f74"}
-                            stroke-width="2"
+                          <FontAwesomeIcon
+                            icon={faArrowUp}
+                            size="lg"
+                            color={music.vote_count ? "green" : "white"}
                           />
-                        </svg>
-                      </button>
-                      <div className="m-2">{music.vote_count}</div>
+                        </button>
+                        <div className="m-2">{music.vote_count}</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )
-        )}
+            );
+          }
+
+          // Ne rien afficher si la session est expirée et que ce n'est pas le jour des résultats
+          return null;
+        })}
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const AddMusicToSession = () => {
 
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar token={token} userRole={userRole}></NavBar>
       <AddMusic sessionId={sessionId} tokenSpotify={tokenSpotify}></AddMusic>;
     </>
   );

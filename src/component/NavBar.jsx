@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import logo from "../Images/logo.png";
 import { decodeToken } from "../services/tokenService";
 import Logout from "./Logout";
+import Profil from "./Profil";
 
 const NavBar = ({ userRole, token }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-primary-500 border-gray-200 shadow font-heading text-accent-800">
+    <nav className="bg-transparent shadow-md">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a
           href="/home"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img src={logo} className="h-20" alt="DailyMusic Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-accent-900">
+          <span className="font-heading text-white  self-center text-3xl font-semibold whitespace-nowrap text-accent-900">
             DailyMusic
           </span>
         </a>
@@ -50,14 +50,14 @@ const NavBar = ({ userRole, token }) => {
           <ul
             className={`${
               isMenuOpen
-                ? "flex flex-col items-start"
-                : "flex  md:flex-row gap-5"
+                ? "flex flex-col items-start "
+                : "flex  md:flex-row gap-5 items-center"
             }`}
           >
             <li>
               <a
                 href="/home"
-                className="block py-2 px-3 text-accent-800 text-xl  rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
+                className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0"
                 aria-current="page"
               >
                 Accueil
@@ -68,9 +68,9 @@ const NavBar = ({ userRole, token }) => {
               <li>
                 <a
                   href="/create-sessions"
-                  className="block py-2 px-3 text-accent-800 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
+                  className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0"
                 >
-                  Ajouter une session
+                  Gérer les sessions
                 </a>
               </li>
             )}
@@ -80,7 +80,7 @@ const NavBar = ({ userRole, token }) => {
                 <li>
                   <a
                     href="/show-sessions"
-                    className="block py-2 px-3 text-accent-800 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
+                    className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0"
                   >
                     Voir les sessions
                   </a>
@@ -91,7 +91,7 @@ const NavBar = ({ userRole, token }) => {
             <li>
               <a
                 href="/contact"
-                className="block py-2 px-3 text-accent-800  text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
+                className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0"
               >
                 Contact
               </a>
@@ -102,7 +102,7 @@ const NavBar = ({ userRole, token }) => {
                 <li>
                   <a
                     href="/login"
-                    className="block py-2 px-3 text-accent-800  text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
+                    className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0"
                   >
                     Se connecter
                   </a>
@@ -110,7 +110,7 @@ const NavBar = ({ userRole, token }) => {
                 <li>
                   <a
                     href="/register"
-                    className="block py-2 px-3 text-accent-800  text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
+                    className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0"
                   >
                     S'inscrire
                   </a>
@@ -119,13 +119,8 @@ const NavBar = ({ userRole, token }) => {
             )}
 
             {token && (
-              <li>
-                <a
-                  href="/home"
-                  className="block py-2 px-3 text-accent-800  text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-900 md:p-0"
-                >
-                  <Logout></Logout>
-                </a>
+              <li className="block py-2 px-3 text-accent-100 text-xl rounded md:hover:bg-transparent md:border-0 md:hover:text-accent-400 md:p-0">
+                <Profil token={token}></Profil>
               </li>
             )}
           </ul>
