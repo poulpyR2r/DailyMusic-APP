@@ -34,7 +34,7 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-800 to-primary-900">
       <div className="max-w-md w-full space-y-8 bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-xl">
         <h2 className="text-center text-3xl font-bold text-primary-50">
-          Sign in to your account
+          Connecte-toi !
         </h2>
         <form className="mt-8 space-y-6" ref={formRef} onSubmit={handleLogin}>
           <div className="space-y-4">
@@ -45,7 +45,7 @@ function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-primary-700 placeholder-primary-300 text-primary-50 bg-primary-800/30 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                className="text-black appearance-none rounded-md relative block w-full px-3 py-2 border border-primary-700 placeholder-primary-300  bg-primary-800/30 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -57,7 +57,7 @@ function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-primary-700 placeholder-primary-300 text-primary-50 bg-primary-800/30 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                className="text-black appearance-none rounded-md relative block w-full px-3 py-2 border border-primary-700 placeholder-primary-300 bg-primary-800/30 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -65,7 +65,7 @@ function Login() {
           </div>
           <button
             type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-primary-50 bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
             Sign in
           </button>

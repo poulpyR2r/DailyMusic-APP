@@ -29,7 +29,9 @@ const ContactPages = () => {
     <>
       <NavBar token={token} userRole={userRole}></NavBar>
 
-      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-primary-800 to-primary-900">
+      <div className="flex flex-col justify-center items-center">
+        <h2 className="text-white text-4xl font-bold mb-8">Contact</h2>
+
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-lg p-8 bg-white/10 backdrop-blur-md rounded shadow-lg"
@@ -39,7 +41,7 @@ const ContactPages = () => {
               className="block text-white text-lg font-bold mb-2"
               htmlFor="name"
             >
-              Name
+              Nom et Prénom
             </label>
 
             <input
@@ -47,7 +49,7 @@ const ContactPages = () => {
               id="name"
               name="name"
               type="text"
-              placeholder="Enter your name"
+              placeholder="Hiren Patel"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -65,7 +67,7 @@ const ContactPages = () => {
               id="email"
               type="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder="hirenpatel@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -86,7 +88,7 @@ const ContactPages = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="message"
               name="message"
-              placeholder="Enter your message"
+              placeholder="Hiren c'est le meilleur prof et je vais avoir une bonne note"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
@@ -100,7 +102,7 @@ const ContactPages = () => {
             className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Submit
+            Envoyer
           </button>
           {succesForm && (
             <p className="text-white mt-4">Message envoyé avec succès</p>

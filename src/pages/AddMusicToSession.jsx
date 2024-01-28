@@ -8,6 +8,7 @@ const AddMusicToSession = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     if (token) {
@@ -30,7 +31,7 @@ const AddMusicToSession = () => {
   return (
     <>
       <NavBar token={token} userRole={userRole}></NavBar>
-      <AddMusic sessionId={sessionId} tokenSpotify={tokenSpotify}></AddMusic>;
+      <AddMusic sessionId={sessionId} tokenSpotify={tokenSpotify}></AddMusic>
     </>
   );
 };

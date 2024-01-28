@@ -17,7 +17,7 @@ const DailyMusic = ({ token }) => {
   };
 
   return (
-    <section className="bg-gradient-to-br from-primary-800 to-primary-900 h-screen">
+    <section className="">
       <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
         <div className="mr-auto place-self-center lg:col-span-7 animate-fadeIn">
           <h1 className="text-5xl font-bold text-left text-primary-50 mb-4">
@@ -31,7 +31,7 @@ const DailyMusic = ({ token }) => {
             les nouvelles tendances musicales.
           </p>
           <button
-            className="flex justify-center align-bottom items-center gap-4 bg-white p-2 rounded-full"
+            className="text-black flex justify-center align-bottom items-center gap-4 bg-white p-2 rounded-full"
             onClick={goToSessions}
           >
             <span className="">Voir les sessions</span>

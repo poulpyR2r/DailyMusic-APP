@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import DailyMusic from "./DailyMusic";
 import "../component/Showsessions.css";
 import CalculeRates from "./CalculeRates";
+import Explication from "./Explication";
 const ShowSession = () => {
   const [sessions, setSessions] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -109,10 +110,14 @@ const ShowSession = () => {
     );
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
+      <Explication
+        text={
+          "Ici, tu trouveras toutes les sessions de vote. Tu peux participer en votant à l'aide de la flèche. Souviens-toi, tu peux voter jusqu'à la fin de la date d'expiration, mais choisis judicieusement car tu as droit à un seul vote par session. Les résultats seront visibles le lendemain de la fin de la session."
+        }
+      ></Explication>
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {sessions.map((session) => {
-          // Afficher les résultats uniquement le jour après l'expiration
           if (isResultDay(session.expiration_date)) {
             return (
               <div className="max-w-sm p-6  font-heading rounded-lg shadow-xl bg-white/10 backdrop-blur-md hover:shadow-lg transition-shadow duration-300 text-left animate-fadeIn">
@@ -126,7 +131,6 @@ const ShowSession = () => {
             );
           }
 
-          // Afficher la session si elle n'est pas encore expirée
           if (!isExpired(session.expiration_date)) {
             return (
               <div

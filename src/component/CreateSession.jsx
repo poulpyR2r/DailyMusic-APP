@@ -27,12 +27,14 @@ const CreateSession = ({ token, userRole }) => {
 
       return;
     }
+
+    const todayDate = new Date().toISOString().split("T")[0];
     Swal.fire({
       title: "Ajouter une session de vote",
       html: `<div id="sessionForm">
                <input type="text" id="module_name" class="swal2-input" placeholder="Nom de la session">
                <input type="text" id="categorie" class="swal2-input" placeholder="Catégorie">
-               <input type="date" id="expiration_date" class="swal2-input">
+               <input type="date" id="expiration_date" class="swal2-input" min="${todayDate}">
 
              </div>`,
       focusConfirm: false,
@@ -68,7 +70,7 @@ const CreateSession = ({ token, userRole }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         sessionServices
-          .createSession(result.value)
+          .createSession(result.value, token)
           .then((response) => {
             Swal.fire({
               icon: "success",
@@ -147,10 +149,6 @@ const CreateSession = ({ token, userRole }) => {
     handleGetSessions();
   }, []);
 
-  const handleVoteMusic = (sessionId) => {
-    navigate(`/vote-music/${sessionId}`);
-  };
-
   const MySwal = withReactContent(Swal);
   const handleLoginSpotify = () => {
     AuthSpotify();
@@ -172,11 +170,21 @@ const CreateSession = ({ token, userRole }) => {
 
       return;
     }
+    if (token.role === "user") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Vous n'avez pas les droits pour ajouter des musiques",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
     navigate(`/add-music/${sessionId}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-800 to-primary-900 text-white p-4">
+    <div className="">
       {userRole && (
         <div className="text-center mb-8 animate-fadeIn">
           <h2 className="text-4xl font-bold mb-4">Ajouter une session</h2>

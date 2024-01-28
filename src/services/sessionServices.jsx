@@ -1,6 +1,6 @@
 import api from "../Config/axiosApi";
 
-const createSession = (data) => {
+const createSession = (data, token) => {
   return api
     .post("/create-session", data)
     .then((response) => {

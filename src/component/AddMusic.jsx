@@ -6,8 +6,10 @@ const AddMusic = ({ sessionId, tokenSpotify }) => {
   const [session, setSession] = useState(null);
   const [musics, setMusics] = useState([]);
   console.log(musics);
+  
   const getSession = async () => {
     const response = await sessionServices.getSessions(sessionId);
+  
     if (
       response.status === 200 &&
       response.data &&
@@ -40,14 +42,18 @@ const AddMusic = ({ sessionId, tokenSpotify }) => {
   }, [sessionId]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-800 to-primary-900 text-white p-4">
-      <div className="max-w-4xl mx-auto flex flex-col items-center">
+    <div className="">
+      <div className=" mx-auto flex flex-col items-center">
         {session && (
           <>
             <h2 className="text-4xl font-bold mb-8">{session.module_name}</h2>
-            <div className="flex items-start w-full">
-              <p className="mb-4">Musique déja ajoutée :</p>
-            </div>
+
+            {musics.length > 0 && (
+              <div className="flex items-start w-full justify-center">
+                <p className="mb-4">Musique déja ajoutée :</p>
+              </div>
+            )}
+
             <div className="flex flex-wrap gap-4 mb-8">
               {musics.map((music) => (
                 <div
@@ -60,7 +66,8 @@ const AddMusic = ({ sessionId, tokenSpotify }) => {
                   >
                     ✕
                   </button>
-                  <h5 className="font-semibold mb-2">{music.title}</h5>
+                  
+                  <h5 className="font-semibold mb-2 mt-3">{music.title}</h5>
                   <p>{music.artist}</p>
                 </div>
               ))}
@@ -71,7 +78,7 @@ const AddMusic = ({ sessionId, tokenSpotify }) => {
         <Search tokenSpotify={tokenSpotify} sessionId={sessionId} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddMusic;
+export default AddMusic

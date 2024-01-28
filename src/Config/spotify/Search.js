@@ -42,7 +42,7 @@ const Search = ({ tokenSpotify }) => {
     } catch (error) {
       console.error(
         "Erreur lors de la mise à jour de la session de vote:",
-        error
+        error 
       );
     }
   };

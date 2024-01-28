@@ -20,7 +20,7 @@ const NavBar = ({ userRole, token }) => {
         </a>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-accent-800 rounded-lg md:hidden"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-accent-100 rounded-lg md:hidden"
           aria-controls="navbar-default"
           aria-expanded={isMenuOpen}
         >
