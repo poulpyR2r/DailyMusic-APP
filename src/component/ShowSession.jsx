@@ -32,9 +32,9 @@ const ShowSession = () => {
   }, []);
 
   const isResultDay = (expirationDate) => {
-    const currentDate = new Date("2024-01-26T00:00:00");
-
-    // const currentDate = new Date(); // Date actuelle
+    // const currentDate = new Date("2024-02-01T00:00:00");
+   
+    const currentDate = new Date(); // Date actuelle
     const expiration = new Date(expirationDate);
     const dayAfterExpiration = new Date(expiration);
     dayAfterExpiration.setDate(expiration.getDate() + 1);
@@ -47,9 +47,9 @@ const ShowSession = () => {
   };
 
   const isExpired = (expirationDate) => {
-    const currentDate = new Date("2024-01-26T00:00:00");
+    // const currentDate = new Date("2024-02-01T00:00:00");
 
-    // const currentDate = new Date(); // Date actuelle
+    const currentDate = new Date(); // Date actuelle
     const expiration = new Date(expirationDate);
     const twoDaysAfterExpiration = new Date(expiration + 2);
     console.log("twoDaysAfterExpiration", twoDaysAfterExpiration);
